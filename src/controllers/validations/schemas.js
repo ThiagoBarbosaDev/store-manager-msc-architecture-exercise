@@ -1,7 +1,7 @@
-const Joi = require('joi');
+// const Joi = require('joi');
 
-const idSchema = Joi.number().integer().min(1).required();
+// const idSchema = Joi.number().integer().min(1).required();
 
-module.exports = {
-  idSchema,
-};
+// module.exports = {
+//   idSchema,
+// };

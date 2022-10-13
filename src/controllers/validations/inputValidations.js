@@ -1,12 +1,12 @@
-const { idSchema } = require('./schemas');
+// const { idSchema } = require('./schemas');
 
-const validateId = (id) => {
-  const { error } = idSchema.validate(id);
-  if (error) return { type: 'INVALID_ID_VALUE', message: '"id" must be a number' };
+// const validateId = (id) => {
+//   const { error } = idSchema.validate(id);
+//   if (error) return { type: 'INVALID_ID_VALUE', message: '"id" must be a number' };
 
-  return { type: null, message: '' };
-};
+//   return { type: null, message: '' };
+// };
 
-module.exports = {
-  validateId,
-};
+// module.exports = {
+//   validateId,
+// };
