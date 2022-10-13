@@ -10,7 +10,7 @@ const findAll = async (_req, res) => {
 const find = async (req, res) => {
   const { id } = req.params;
   // const { message, type } = validateId(id);
-  
+  // a
   // if (type) return res.status(mapError(type)).json({ message });
   
   const result = await productsServices.find(id);
