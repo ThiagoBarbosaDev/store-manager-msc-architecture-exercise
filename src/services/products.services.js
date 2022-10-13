@@ -11,7 +11,14 @@ const find = async (id) => {
   return { type: null, message: result };
 };
 
+const insert = async (payload) => {
+  const id = await productsModels.insert(payload);
+  const response = await productsModels.find(id);
+  return { type: null, message: response };
+};
+
 module.exports = {
   findAll,
   find,
+  insert,
 };

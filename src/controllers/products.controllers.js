@@ -19,7 +19,14 @@ const find = async (req, res) => {
   res.status(200).json(result.message);
 };
 
+const insert = async (req, res) => { 
+  const payload = req.body;
+  const result = await productsServices.insert(payload);
+  res.status(201).json(result);
+};
+
 module.exports = {
   findAll,
   find,
+  insert,
 };

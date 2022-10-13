@@ -1,7 +1,6 @@
 const { expect } = require("chai");
 const sinon = require("sinon");
 const { productsModels } = require('../../../src/models');
-const passengerModel = require("../../../src/models/products.models");
 const { productsServices } = require('../../../src/services');
 const { productsMock, productNotFoundErrorMock } = require('./mocks/products.services.mock');
 
@@ -16,6 +15,7 @@ describe("Testes de unidade da camada services de produtos", function () {
     // Assert
     expect(result.message).to.be.deep.equal(productsMock);
   });
+
   it("Recuperando os dados de um produto baseado no ID", async function () {
     // Arrange
     sinon.stub(productsModels, "find").resolves(productsMock[0]);
@@ -24,6 +24,7 @@ describe("Testes de unidade da camada services de produtos", function () {
     // Assert
     expect(result.message).to.be.deep.equal(productsMock[0]);
   });
+
   it("Gera um erro se o ID não existir", async function () {
     // Arrange
     sinon.stub(productsModels, "find").resolves(undefined);
@@ -32,4 +33,22 @@ describe("Testes de unidade da camada services de produtos", function () {
     // Assert
     expect(result).to.be.deep.equal(productNotFoundErrorMock);
   });
+
+    it("Cadastrando um novo produto", async function () {
+      // Arrange
+      const modelReturnMock = {
+          id: 4,
+          name: "ProdutoX",
+      };
+
+      const serviceReturnMock = { type: null, message: modelReturnMock };
+
+      sinon.stub(productsModels, "insert").resolves([{ insertId: 4 }]);
+      sinon.stub(productsModels, "find").resolves(modelReturnMock);
+      const mockProduct = "ProdutoX";
+      // Act
+      const result = await productsServices.insert(mockProduct);
+      // Assert
+      expect(result).to.be.deep.equal(serviceReturnMock);
+    });
 });
