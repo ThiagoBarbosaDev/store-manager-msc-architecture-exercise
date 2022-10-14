@@ -45,10 +45,36 @@ describe("Testes de unidade da camada services de produtos", function () {
 
       sinon.stub(productsModels, "insert").resolves([{ insertId: 4 }]);
       sinon.stub(productsModels, "find").resolves(modelReturnMock);
-      const mockProduct = "ProdutoX";
+      const mockProduct = { name: "ProdutoX" };
       // Act
       const result = await productsServices.insert(mockProduct);
       // Assert
       expect(result).to.be.deep.equal(serviceReturnMock);
+    });
+
+    it("Deve gerar um erro ao não passar a chave 'name' no body ", async function () {
+      // Arrange
+      const expectedReturn = {
+        type: 'INVALID_NAME_VALUE',
+      message: '"name" is required'
+      }
+      const mockProduct = {};
+      // Act
+      const result = await productsServices.insert(mockProduct);
+      // Assert
+      expect(result).to.be.deep.equal(expectedReturn);
+    });
+
+    it("Deve gerar um erro ao passar a chave 'name' no body com menos de 5 caractéres ", async function () {
+      // Arrange
+      const expectedReturn = {
+        type: "INVALID_NAME_LENGTH",
+        message: '"name" length must be at least 5 characters long',
+      };
+      const mockProduct = { name: "foo" };
+      // Act
+      const result = await productsServices.insert(mockProduct);
+      // Assert
+      expect(result).to.be.deep.equal(expectedReturn);
     });
 });

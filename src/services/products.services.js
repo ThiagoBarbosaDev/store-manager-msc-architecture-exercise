@@ -14,7 +14,7 @@ const find = async (id) => {
 
 const insert = async (payload) => {
   const error = nameValidation(payload);
-  console.log(error.type);
+
   if (error.type) {
     return error;
   }

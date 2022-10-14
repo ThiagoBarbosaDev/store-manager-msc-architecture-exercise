@@ -55,6 +55,21 @@ describe("Testes de unidade da camada controller de produtos", function () {
     sinon.assert.calledWith(res.status, 404);
     sinon.assert.calledWith(res.json, responseIdNotFoundErrorMock);
   });
+
+  it("Cadastrando um novo produto na camada", async function () {
+    const res = {};
+    const req = { body: { name: 'ProdutoX' } };
+    const productsList = productsMock[0];
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(productsServices, "find").resolves(productNotFoundErrorMock);
+
+    await productsControllers.find(req, res);
+
+    sinon.assert.calledWith(res.status, 404);
+    sinon.assert.calledWith(res.json, responseIdNotFoundErrorMock);
+  });
   
 });
 
