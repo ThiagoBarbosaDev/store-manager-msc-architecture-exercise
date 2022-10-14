@@ -3,10 +3,10 @@ const { productsControllers } = require('../controllers');
 
 const router = express.Router();
 
-router.get('/', productsControllers.findAll);
-
 router.get('/:id', productsControllers.find);
 
-router.post('/', productsControllers.insert);
+router.route('/')
+  .post(productsControllers.insert)
+  .get(productsControllers.findAll);
 
 module.exports = router;
