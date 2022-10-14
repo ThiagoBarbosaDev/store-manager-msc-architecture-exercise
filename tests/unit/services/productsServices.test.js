@@ -56,7 +56,7 @@ describe("Testes de unidade da camada services de produtos", function () {
       // Arrange
       const expectedReturn = {
         type: 'INVALID_NAME_VALUE',
-      message: '"name" is required'
+        message: '"name" is required'
       }
       const mockProduct = {};
       // Act

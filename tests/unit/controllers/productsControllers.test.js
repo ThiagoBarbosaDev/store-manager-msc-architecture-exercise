@@ -59,16 +59,52 @@ describe("Testes de unidade da camada controller de produtos", function () {
   it("Cadastrando um novo produto na camada", async function () {
     const res = {};
     const req = { body: { name: 'ProdutoX' } };
-    const productsList = productsMock[0];
+    const serviceResult = {type: null, message: { name: 'ProdutoX', id: 2 }}
 
     res.status = sinon.stub().returns(res);
     res.json = sinon.stub().returns();
-    sinon.stub(productsServices, "find").resolves(productNotFoundErrorMock);
+    sinon.stub(productsServices, "insert").resolves(serviceResult);
 
-    await productsControllers.find(req, res);
+    await productsControllers.insert(req, res);
 
-    sinon.assert.calledWith(res.status, 404);
-    sinon.assert.calledWith(res.json, responseIdNotFoundErrorMock);
+    sinon.assert.calledWith(res.status, 201);
+    sinon.assert.calledWith(res.json, serviceResult.message);
+  });
+
+  it("Gerar um erro ao cadastrar um novo produto sem o nome", async function () {
+    const res = {};
+    const req = { body: {} };
+    const serviceResult = {
+      type: 'INVALID_NAME_VALUE',
+      message: '"name" is required',
+    };
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(productsServices, "insert").resolves(serviceResult);
+
+    await productsControllers.insert(req, res);
+
+    sinon.assert.calledWith(res.status, 400);
+    sinon.assert.calledWith(res.json, { message: serviceResult.message });
+  });
+
+  it("Gerar um erro ao cadastrar um novo produto sem o nome", async function () {
+    const res = {};
+    const req = { body: {} };
+    const serviceResult = {
+      type: "INVALID_NAME_LENGTH",
+      message: '"name" length must be at least 5 characters long',
+    };
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(productsServices, "insert").resolves(serviceResult);
+
+    await productsControllers.insert(req, res);
+
+    sinon.assert.calledWith(res.status, 422);
+    sinon.assert.calledWith(res.json, { message: serviceResult.message });
   });
   
 });
