@@ -21,8 +21,11 @@ const find = async (req, res) => {
 
 const insert = async (req, res) => { 
   const payload = req.body;
-  const result = await productsServices.insert(payload);
-  res.status(201).json(result.message);
+  const { type, message } = await productsServices.insert(payload);
+ if (type) {
+   return res.status(mapError(type)).json({ message });
+ }
+  res.status(201).json(message);
 };
 
 module.exports = {

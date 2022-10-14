@@ -1,4 +1,5 @@
 const { productsModels } = require('../models');
+const { nameValidation } = require('./validations/nameValidation');
 
 const findAll = async () => {
   const result = await productsModels.findAll();
@@ -12,6 +13,12 @@ const find = async (id) => {
 };
 
 const insert = async (payload) => {
+  const error = nameValidation(payload);
+  console.log(error.type);
+  if (error.type) {
+    return error;
+  }
+
   const id = await productsModels.insert(payload);
   const response = await productsModels.find(id);
   return { type: null, message: response };
