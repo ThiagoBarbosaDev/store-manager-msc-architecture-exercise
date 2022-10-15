@@ -3,7 +3,9 @@ const { productsControllers } = require('../controllers');
 
 const router = express.Router();
 
-router.get('/:id', productsControllers.find);
+router.route('/:id')
+  .get(productsControllers.find)
+  .put(productsControllers.update);
 
 router.route('/')
   .post(productsControllers.insert)

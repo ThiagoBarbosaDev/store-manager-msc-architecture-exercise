@@ -1,5 +1,6 @@
 const { productsModels } = require('../models');
 const { nameValidation } = require('./validations/nameValidation');
+const { doesProductIdExist } = require('./validations/validateDoesProductIdExist');
 
 const findAll = async () => {
   const result = await productsModels.findAll();
@@ -24,8 +25,19 @@ const insert = async (payload) => {
   return { type: null, message: response };
 };
 
+const update = async (id, payload) => {
+  const { message, type } = nameValidation(payload);
+  const doesIdExist = await doesProductIdExist(id);
+  if (!doesIdExist) { return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' }; }
+  if (type) { return { message, type }; }
+  const affectedRows = await productsModels.update(id, payload);
+  const result = await find(id);
+  if (affectedRows) { return result; }
+};
+
 module.exports = {
   findAll,
   find,
   insert,
+  update,
 };

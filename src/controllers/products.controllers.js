@@ -28,8 +28,17 @@ const insert = async (req, res) => {
   res.status(201).json(message);
 };
 
+const update = async (req, res) => { 
+  const { id } = req.params;
+  const payload = req.body;
+  const { type, message } = await productsServices.update(id, payload);
+  if (type) { return res.status(mapError(type)).json({ message }); }
+  return res.status(200).json(message);
+};
+
 module.exports = {
   findAll,
   find,
   insert,
+  update,
 };
