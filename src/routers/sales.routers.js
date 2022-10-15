@@ -5,6 +5,6 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(salesControllers.insert);
+  .post(salesControllers.insert);
 
 module.exports = router;
