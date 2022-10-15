@@ -10,7 +10,8 @@ const insert = async (req, res) => {
   //   return res.status(mapError(type)).json({ message });
   // }
   const { message, type } = await salesServices.insertSales(payload); 
-  res.status(mapError(type)).json({ message });
+  if (type) { return res.status(mapError(type)).json({ message }); }
+  return res.status(201).json(message);
 };
 
 module.exports = {
