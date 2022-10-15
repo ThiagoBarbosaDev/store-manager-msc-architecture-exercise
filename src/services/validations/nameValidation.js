@@ -2,8 +2,6 @@ const { nameSchema, insertSaleProductsSchema } = require('./schemas');
 
 const nameValidation = (name) => {
   const { error } = nameSchema.validate(name);
-
-  console.log('nameValidation ERROR', error);
   // const errorMap = {
   //   INVALID_NAME_VALUE: 400,
   // };

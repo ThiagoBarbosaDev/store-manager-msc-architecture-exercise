@@ -75,7 +75,7 @@ describe("Testes de unidade da camada controller de produtos", function () {
     const res = {};
     const req = { body: {} };
     const serviceResult = {
-      type: 'INVALID_NAME_VALUE',
+      type: 'VALUE_NOT_FOUND',
       message: '"name" is required',
     };
 
@@ -89,7 +89,7 @@ describe("Testes de unidade da camada controller de produtos", function () {
     sinon.assert.calledWith(res.json, { message: serviceResult.message });
   });
 
-  it("Gerar um erro ao cadastrar um novo produto sem o nome", async function () {
+  it("Gerar um erro ao cadastrar um novo produto com o nome muito curto", async function () {
     const res = {};
     const req = { body: {} };
     const serviceResult = {

@@ -55,7 +55,7 @@ describe("Testes de unidade da camada services de produtos", function () {
     it("Deve gerar um erro ao não passar a chave 'name' no body ", async function () {
       // Arrange
       const expectedReturn = {
-        type: 'INVALID_NAME_VALUE',
+        type: 'VALUE_NOT_FOUND',
         message: '"name" is required'
       }
       const mockProduct = {};
