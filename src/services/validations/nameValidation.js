@@ -24,7 +24,7 @@ const nameValidation = (name) => {
 
 const validateSaleProducts = (payload) => {
   const { error } = insertSaleProductsSchema.validate(payload);
-  // console.log('###', error);
+
   if (error && error.details[0].type === 'any.required') {
     return { type: 'VALUE_NOT_FOUND', message: error.details[0].message };
   }

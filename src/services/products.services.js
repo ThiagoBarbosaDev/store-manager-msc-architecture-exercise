@@ -35,9 +35,19 @@ const update = async (id, payload) => {
   if (affectedRows) { return result; }
 };
 
+const deleteItem = async (id) => { 
+  const doesIdExist = await doesProductIdExist(id);
+  if (!doesIdExist) {
+    return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
+  }
+  const result = await productsModels.deleteItem(id);
+  return { type: null, message: result };
+};
+
 module.exports = {
   findAll,
   find,
   insert,
   update,
+  deleteItem,
 };
