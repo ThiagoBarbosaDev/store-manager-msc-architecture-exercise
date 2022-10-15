@@ -120,5 +120,33 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "550056cf-b51b-45ee-9e98-5a955b983f67",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/sales",
+    "url": "http://localhost:3000/sales",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-10-15T16:53:47.999Z",
+    "modified": "2022-10-15T16:53:48.076Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "214640a0-8cff-4825-9185-922f7779673d",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/sales/1",
+    "url": "http://localhost:3000/sales/1",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-10-15T16:54:00.174Z",
+    "modified": "2022-10-15T18:11:12.875Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]

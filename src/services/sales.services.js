@@ -1,6 +1,7 @@
 const salesModels = require('../models/sales.models');
 const { validateSaleProducts } = require('./validations/nameValidation');
 const { doesProductIdExist } = require('./validations/validateDoesProductIdExist');
+const { doesSaleIdExist } = require('./validations/validateDoesSaleIdExist');
 
 const handleSaleProducts = (payload, saleId) =>
   payload.map(async (dataObj) => {
@@ -25,6 +26,20 @@ const insertSales = async (payload) => {
   return { type: null, message: { id: saleId, itemsSold: payload } };
 };
 
+const find = async (id) => {
+  const isSaleIdInvalid = await doesSaleIdExist(id);
+  if (isSaleIdInvalid) { return { type: 'ID_WITHOUT_RESULTS', message: 'Sale not found' }; }
+  const result = await salesModels.find(id);
+  return { type: null, message: result };
+};
+
+const findAll = async () => {
+  const result = await salesModels.findAll();
+  return { type: null, message: result };
+};
+
 module.exports = {
   insertSales,
+  find,
+  findAll,
 };
