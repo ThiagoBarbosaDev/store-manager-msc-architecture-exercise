@@ -10,12 +10,14 @@ const handleSaleProducts = (payload, saleId) =>
 
 const insertSales = async (payload) => {
   const { message, type } = validateSaleProducts(payload);
-  const doesProductIdExistsArray = await Promise
-    .all(payload.map(async ({ productId }) => doesProductIdExist(productId)));
-  const doesProductIdNotExist = !doesProductIdExistsArray.every((productId) => productId);
-
-  if (doesProductIdNotExist) { return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' }; }
+  
   if (type) { return { type, message }; }
+
+  const doesProductIdExistsArray = await Promise
+  .all(payload.map(async ({ productId }) => doesProductIdExist(productId)));
+  const doesProductIdNotExist = !doesProductIdExistsArray.every((productId) => productId);
+  
+  if (doesProductIdNotExist) { return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' }; }
 
   const saleId = await salesModels.insertSales();
   await Promise.all(handleSaleProducts(payload, saleId));
