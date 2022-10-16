@@ -31,7 +31,18 @@ const deleteItem = async (req, res) => {
   return res.status(204).end();
 };
 
+const updateItem = async (req, res) => {
+  const { id } = req.params;
+  const payload = req.body;
+  const { message, type } = await salesServices.updateItem(id, payload);
+
+  if (type) { return res.status(mapError(type)).json({ message }); }
+
+  return res.status(200).json({ saleId: id, itemsUpdated: payload });
+};
+
 module.exports = {
+  updateItem,
   insert,
   find,
   findAll,

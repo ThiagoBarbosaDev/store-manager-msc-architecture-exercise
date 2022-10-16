@@ -1,4 +1,5 @@
 const salesModels = require('../models/sales.models');
+const { isProductIdInDatabase } = require('./validations/isProductIdInDatabase');
 const { validateSaleProducts } = require('./validations/nameValidation');
 const { doesProductIdExist } = require('./validations/validateDoesProductIdExist');
 const { doesSaleIdExist } = require('./validations/validateDoesSaleIdExist');
@@ -47,7 +48,27 @@ const deleteItem = async (id) => {
   return { type: null, message: 'Sale deleted with success' };
 };
 
+const updateItem = async (id, payload) => {
+  const { message, type } = validateSaleProducts(payload);
+  const isSaleIdInvalid = await doesSaleIdExist(id);
+
+  if (isSaleIdInvalid) {
+    return { type: 'ID_WITHOUT_RESULTS', message: 'Sale not found' };
+  }
+
+  if (type) {
+    return { type, message };
+  }
+
+  const productIdNotFound = await isProductIdInDatabase(payload);
+  if (productIdNotFound) { return productIdNotFound; }
+
+  await salesModels.updateItem(id, payload);
+  return { type: null, message: '' };
+};
+
 module.exports = {
+  updateItem,
   deleteItem,
   insertSales,
   find,

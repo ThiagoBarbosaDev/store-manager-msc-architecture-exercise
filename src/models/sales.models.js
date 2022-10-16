@@ -41,6 +41,18 @@ const deleteItem = async (id) => {
   return affectedRows;
 };
 
+const updateItem = async (id, payload) => {
+  await Promise.all(
+    payload.map(async ({ quantity, productId }) => {
+      const [{ affectedRows }] = await connection.execute(
+        'UPDATE StoreManager.sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?',
+        [quantity, id, productId],
+      );
+      return affectedRows;
+    }),
+  );
+  return true;
+};
 // id, sale => sales
 // product_id INT, sale_id INT, quantity INT  sales_products
 
@@ -56,6 +68,7 @@ const deleteItem = async (id) => {
 // ];
 
 module.exports = {
+  updateItem,
   deleteItem,
   findAll,
   find,

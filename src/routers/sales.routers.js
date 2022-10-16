@@ -5,7 +5,8 @@ const router = express.Router();
 
 router.route('/:id')
   .get(salesControllers.find)
-  .delete(salesControllers.deleteItem);
+  .delete(salesControllers.deleteItem)
+  .put(salesControllers.updateItem);
 
 router
   .route('/')
