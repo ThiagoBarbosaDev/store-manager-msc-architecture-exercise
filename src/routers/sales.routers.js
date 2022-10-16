@@ -3,7 +3,9 @@ const { salesControllers } = require('../controllers');
 
 const router = express.Router();
 
-router.get('/:id', salesControllers.find);
+router.route('/:id')
+  .get(salesControllers.find)
+  .delete(salesControllers.deleteItem);
 
 router
   .route('/')
