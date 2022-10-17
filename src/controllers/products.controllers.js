@@ -38,13 +38,19 @@ const update = async (req, res) => {
 
 const deleteItem = async (req, res) => {
   const { id } = req.params;
-  // const payload = req.body;
   const { type, message } = await productsServices.deleteItem(id);
   if (type) { return res.status(mapError(type)).json({ message }); }
   res.status(204).end();
 };
 
+const queryItem = async (req, res) => {
+  const { q: query } = req.query;
+  const response = await productsServices.queryItem(query);
+  res.status(200).json(response.message);
+};
+
 module.exports = {
+  queryItem,
   findAll,
   find,
   insert,

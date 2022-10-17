@@ -44,7 +44,14 @@ const deleteItem = async (id) => {
   return { type: null, message: result };
 };
 
+const queryItem = async (query) => {
+  const result = await productsModels.queryItem(query);
+  console.log(result);
+  return { type: null, message: result };
+};
+
 module.exports = {
+  queryItem,
   findAll,
   find,
   insert,

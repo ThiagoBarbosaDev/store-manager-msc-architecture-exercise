@@ -3,6 +3,8 @@ const { productsControllers } = require('../controllers');
 
 const router = express.Router();
 
+router.get('/search', productsControllers.queryItem);
+
 router.route('/:id')
   .get(productsControllers.find)
   .put(productsControllers.update)
