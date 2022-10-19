@@ -1,6 +1,7 @@
 const { productsModels } = require('../models');
-const { nameValidation } = require('./validations/nameValidation');
-const { doesProductIdExist } = require('./validations/validateDoesProductIdExist');
+const throwError = require('../utils/genericErrorResponse');
+const { checkDatabaseForId } = require('./validations/isProductIdInDatabase');
+const { nameSchema } = require('./validations/schemas');
 
 const findAll = async () => {
   const result = await productsModels.findAll();
@@ -9,45 +10,34 @@ const findAll = async () => {
 
 const find = async (id) => {
   const result = await productsModels.find(id);
-  if (!result) { return { type: 'ID_WITHOUT_RESULTS', message: 'Product not found' }; }
-  return { type: null, message: result };
+  if (!result) { throw throwError('ID_WITHOUT_RESULTS', 'Product not found'); }
+  return { message: result };
 };
 
 const insert = async (payload) => {
-  const error = nameValidation(payload);
-
-  if (error.type) {
-    return error;
-  }
-
+  nameSchema.validate(payload);
   const id = await productsModels.insert(payload);
   const response = await productsModels.find(id);
-  return { type: null, message: response };
+  return { message: response };
 };
 
 const update = async (id, payload) => {
-  const { message, type } = nameValidation(payload);
-  const doesIdExist = await doesProductIdExist(id);
-  if (!doesIdExist) { return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' }; }
-  if (type) { return { message, type }; }
-  const affectedRows = await productsModels.update(id, payload);
+  nameSchema.validate(payload);
+  await checkDatabaseForId(id);
+  await productsModels.update(id, payload);
   const result = await find(id);
-  if (affectedRows) { return result; }
+  return result;
 };
 
 const deleteItem = async (id) => { 
-  const doesIdExist = await doesProductIdExist(id);
-  if (!doesIdExist) {
-    return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
-  }
-  const result = await productsModels.deleteItem(id);
-  return { type: null, message: result };
+  await checkDatabaseForId(id);
+  await productsModels.deleteItem(id);
+  return true;
 };
 
 const queryItem = async (query) => {
   const result = await productsModels.queryItem(query);
-  console.log(result);
-  return { type: null, message: result };
+  return { message: result };
 };
 
 module.exports = {

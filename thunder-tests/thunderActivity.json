@@ -163,12 +163,12 @@
     "method": "PUT",
     "sortNum": 0,
     "created": "2022-10-16T19:33:46.085Z",
-    "modified": "2022-10-16T22:48:32.312Z",
+    "modified": "2022-10-19T00:41:40.108Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "[\n  {\n    \"productId\": 4,\n    \"quantity\": 10\n  },\n  {\n    \"productId\": 2,\n    \"quantity\": 50\n  }\n]",
+      "raw": "[\n  {\n    \"productId\": 4,\n    \"quantity\": 1\n  },\n  {\n    \"productId\": 2,\n    \"quantity\": 1\n  }\n]",
       "form": []
     },
     "tests": []

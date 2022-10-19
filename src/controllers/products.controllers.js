@@ -1,6 +1,4 @@
 const { productsServices } = require('../services');
-const { mapError } = require('../utils/errorMap');
-// const { validateId } = require('./validations/inputValidations');
 
 const findAll = async (_req, res) => {
   const { message } = await productsServices.findAll();
@@ -9,44 +7,33 @@ const findAll = async (_req, res) => {
 
 const find = async (req, res) => {
   const { id } = req.params;
-  // const { message, type } = validateId(id);
-
-  // if (type) return res.status(mapError(type)).json({ message });
-  
-  const result = await productsServices.find(id);
-  if (result.type) { return res.status(mapError(result.type)).json({ message: result.message }); }
-
-  res.status(200).json(result.message);
+  const { message } = await productsServices.find(id);
+  res.status(200).json(message);
 };
 
 const insert = async (req, res) => { 
   const payload = req.body;
-  const { type, message } = await productsServices.insert(payload);
- if (type) {
-   return res.status(mapError(type)).json({ message });
- }
+  const { message } = await productsServices.insert(payload);
   res.status(201).json(message);
 };
 
 const update = async (req, res) => { 
   const { id } = req.params;
   const payload = req.body;
-  const { type, message } = await productsServices.update(id, payload);
-  if (type) { return res.status(mapError(type)).json({ message }); }
+  const { message } = await productsServices.update(id, payload);
   return res.status(200).json(message);
 };
 
 const deleteItem = async (req, res) => {
   const { id } = req.params;
-  const { type, message } = await productsServices.deleteItem(id);
-  if (type) { return res.status(mapError(type)).json({ message }); }
+  await productsServices.deleteItem(id);
   res.status(204).end();
 };
 
 const queryItem = async (req, res) => {
   const { q: query } = req.query;
-  const response = await productsServices.queryItem(query);
-  res.status(200).json(response.message);
+  const { message } = await productsServices.queryItem(query);
+  res.status(200).json(message);
 };
 
 module.exports = {

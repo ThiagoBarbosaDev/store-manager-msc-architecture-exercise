@@ -5,6 +5,7 @@ const errorMap = {
   INVALID_NAME_LENGTH: 422,
   INVALID_NUMBER_VALUE: 422,
   PRODUCT_NOT_FOUND: 404,
+  BAD_REQUEST: 422,
 };
 
 const mapError = (type) => errorMap[type] || 500;

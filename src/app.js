@@ -1,7 +1,9 @@
-const express = require('express');
-const { productsRoutes, salesRoutes } = require('./routers');
+require('express-async-errors');
 
-// require('express-async-errors');
+const express = require('express');
+
+const { productsRoutes, salesRoutes } = require('./routers');
+const { mapError } = require('./utils/errorMap');
 
 const app = express();
 
@@ -15,10 +17,9 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-// app.use(async (err, _req, res, _next) => {
-//   console.log('MIDDLEWARE DE ERRO', err);
-//   res.status(500).json({ message: `Algo deu errado! Mensagem: ${err.message}` });
-// });
+app.use(async ({ type, message }, _req, res, _next) => (
+  res.status(mapError(type)).json({ message })
+));
 
 // não remova essa exportação, é para o avaliador funcionar
 // você pode registrar suas rotas normalmente, como o exemplo acima

@@ -41,31 +41,13 @@ const deleteItem = async (id) => {
   return affectedRows;
 };
 
-const updateItem = async (id, payload) => {
-  await Promise.all(
-    payload.map(async ({ quantity, productId }) => {
-      const [{ affectedRows }] = await connection.execute(
-        'UPDATE StoreManager.sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?',
-        [quantity, id, productId],
-      );
-      return affectedRows;
-    }),
+const updateItem = async ({ quantity, productId }, id) => {
+  const [{ affectedRows }] = await connection.execute(
+    'UPDATE StoreManager.sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?',
+    [quantity, id, productId],
   );
-  return true;
+  return affectedRows;
 };
-// id, sale => sales
-// product_id INT, sale_id INT, quantity INT  sales_products
-
-// [
-//   {
-//     productId: 1,
-//     quantity: 1,
-//   },
-//   {
-//     productId: 2,
-//     quantity: 5,
-//   },
-// ];
 
 module.exports = {
   updateItem,

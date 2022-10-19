@@ -1,21 +1,22 @@
-const { doesProductIdExist } = require('./validateDoesProductIdExist');
+const connection = require('../../models/database/connection');
+const throwError = require('../../utils/genericErrorResponse');
 
-const isProductIdInDatabase = async (payload) => {
-  const doesProductIdExistsArray = await Promise.all(
-    payload.map(async ({ productId }) => doesProductIdExist(productId)),
-  );
-
-  const doesProductIdNotExist = !doesProductIdExistsArray.every(
-    (productId) => !!productId,
-  );
-
-  if (doesProductIdNotExist) {
-    return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
+const checkDatabaseForId = async (id) => {
+  const [result] = await connection
+    .execute('SELECT * FROM StoreManager.products WHERE id = ?', [id]);
+  if (result.length) {
+    return true;
   }
+    throw throwError('PRODUCT_NOT_FOUND', 'Product not found');
+};
 
-  return false;
+const handleProductIdValidation = async (payload) => {
+  await Promise.all(
+    payload.map(async ({ productId }) => checkDatabaseForId(productId)),
+  );
 };
 
 module.exports = {
-  isProductIdInDatabase,
+  checkDatabaseForId,
+  handleProductIdValidation,
 };
