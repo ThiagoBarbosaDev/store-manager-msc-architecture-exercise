@@ -16,7 +16,6 @@ const find = async (id) => {
       + 'FROM StoreManager.sales_products '
       + 'SP INNER JOIN StoreManager.sales S ON SP.sale_id = S.id WHERE sale_id = ?', [id],
   );
-  console.log('model', result);
   return result;
 };
 
