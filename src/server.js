@@ -6,11 +6,4 @@ require('dotenv').config();
 
 app.listen(process.env.PORT, async () => {
   console.log(`Escutando na porta ${process.env.PORT}`);
-  // const [dbres] = await connection.execute(
-  //   'SELECT * FROM StoreManager.products',
-  // );
-  // const [idres] = await connection
-  //   .execute('SELECT * FROM StoreManager.products WHERE id = ?', [3]);
-  // console.log('idres', idres);
-  // if (dbres.length) { console.log(`DATABASE OK, product LENGTH = ${dbres.length}`); }
 });

@@ -1,28 +1,31 @@
 const salesModels = require('../models/sales.models');
-const { handleProductIdValidation } = require('./validations/isProductIdInDatabase');
-const { insertSaleProductsSchema } = require('./validations/schemas');
-const { validateSaleId } = require('./validations/validateSaleId');
+const { throwError } = require('../utils/errorUtils');
 
-const find = async (id) => {
-  await validateSaleId(id);
-  const result = await salesModels.find(id);
-  return { type: null, message: result };
-};
+const { insertSaleProductsSchema } = require('./validations/schemas');
+const { validateProductIdArray } = require('./validations/validateProductId');
+
+const { validateSaleId } = require('./validations/validateSaleId');
 
 const findAll = async () => {
   const result = await salesModels.findAll();
-  return { type: null, message: result };
+  return { message: result };
+};
+
+const find = async (id) => {
+  const result = await salesModels.find(id);
+  const doesSaleIdNotExist = !result.length;
+  if (doesSaleIdNotExist) { throw throwError('ID_WITHOUT_RESULTS', 'Sale not found'); }
+  return { message: result };
 };
 
 const handleSaleProducts = (payload, saleId) =>
   payload.map(async (dataObj) => {
-    const saleProductsId = await salesModels.insertSaleProducts(dataObj, saleId);
-    return saleProductsId;
+    await salesModels.insertSaleProducts(dataObj, saleId);
 });
 
 const insertSales = async (payload) => {
   insertSaleProductsSchema.validate(payload);
-  await handleProductIdValidation(payload);
+  await validateProductIdArray(payload);
   const saleId = await salesModels.insertSales();
   await Promise.all(handleSaleProducts(payload, saleId));
   return { message: { id: saleId, itemsSold: payload } };
@@ -36,21 +39,20 @@ const deleteItem = async (id) => {
 
 const handleUpdateItem = (payload, id) =>
   payload.map(async (dataObj) => {
-    console.log(dataObj, payload, id);
     await salesModels.updateItem(dataObj, id);
   });
 
 const updateItem = async (id, payload) => {
   insertSaleProductsSchema.validate(payload);
-  await handleProductIdValidation(payload);
+  await validateProductIdArray(payload);
   await validateSaleId(id);
   await Promise.all(handleUpdateItem(payload, id));
   return true;
 };
 
 module.exports = {
-  find,
   findAll,
+  find,
   insertSales,
   deleteItem,
   updateItem,

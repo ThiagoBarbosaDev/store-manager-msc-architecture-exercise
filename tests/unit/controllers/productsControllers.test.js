@@ -93,7 +93,7 @@ describe("Testes de unidade da camada controller de produtos", function () {
     const res = {};
     const req = { body: {} };
     const serviceResult = {
-      type: "INVALID_NAME_LENGTH",
+      type: "BAD_REQUEST",
       message: '"name" length must be at least 5 characters long',
     };
 

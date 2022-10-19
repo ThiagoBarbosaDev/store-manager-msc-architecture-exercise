@@ -3,7 +3,7 @@ require('express-async-errors');
 const express = require('express');
 
 const { productsRoutes, salesRoutes } = require('./routers');
-const { mapError } = require('./utils/errorMap');
+const { mapError } = require('./utils/errorUtils');
 
 const app = express();
 

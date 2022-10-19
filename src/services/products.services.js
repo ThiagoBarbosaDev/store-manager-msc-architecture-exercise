@@ -1,7 +1,8 @@
 const { productsModels } = require('../models');
-const throwError = require('../utils/genericErrorResponse');
-const { checkDatabaseForId } = require('./validations/isProductIdInDatabase');
+const { throwError } = require('../utils/errorUtils');
+
 const { nameSchema } = require('./validations/schemas');
+const { validateProductId } = require('./validations/validateProductId');
 
 const findAll = async () => {
   const result = await productsModels.findAll();
@@ -21,18 +22,18 @@ const insert = async (payload) => {
   return { message: response };
 };
 
+const deleteItem = async (id) => { 
+  await validateProductId(id);
+  await productsModels.deleteItem(id);
+  return true;
+};
+
 const update = async (id, payload) => {
   nameSchema.validate(payload);
-  await checkDatabaseForId(id);
+  await validateProductId(id);
   await productsModels.update(id, payload);
   const result = await find(id);
   return result;
-};
-
-const deleteItem = async (id) => { 
-  await checkDatabaseForId(id);
-  await productsModels.deleteItem(id);
-  return true;
 };
 
 const queryItem = async (query) => {
@@ -41,10 +42,10 @@ const queryItem = async (query) => {
 };
 
 module.exports = {
-  queryItem,
   findAll,
   find,
   insert,
-  update,
   deleteItem,
+  update,
+  queryItem,
 };

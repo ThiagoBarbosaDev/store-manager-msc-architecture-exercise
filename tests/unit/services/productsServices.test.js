@@ -68,7 +68,7 @@ describe("Testes de unidade da camada services de produtos", function () {
     it("Deve gerar um erro ao passar a chave 'name' no body com menos de 5 caractéres ", async function () {
       // Arrange
       const expectedReturn = {
-        type: "INVALID_NAME_LENGTH",
+        type: "BAD_REQUEST",
         message: '"name" length must be at least 5 characters long',
       };
       const mockProduct = { name: "foo" };

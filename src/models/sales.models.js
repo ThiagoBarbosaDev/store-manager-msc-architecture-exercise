@@ -1,5 +1,25 @@
 const connection = require('./database/connection');
 
+const findAll = async () => {
+  const [result] = await connection.execute(
+    'SELECT sale_id as saleId, product_id as productId, quantity, date '
+      + 'FROM StoreManager.sales_products '
+      + 'SP INNER JOIN StoreManager.sales S ON SP.sale_id = S.id',
+  );
+  return result;
+};
+
+const find = async (id) => { 
+  const [result] = await connection
+    .execute(
+      'SELECT product_id as productId, quantity, date '
+      + 'FROM StoreManager.sales_products '
+      + 'SP INNER JOIN StoreManager.sales S ON SP.sale_id = S.id WHERE sale_id = ?', [id],
+  );
+  console.log('model', result);
+  return result;
+};
+
 const insertSales = async () => {
   const [{ insertId }] = await connection
     .execute('INSERT INTO StoreManager.sales VALUE ()');
@@ -15,29 +35,9 @@ const insertSaleProducts = async ({ productId, quantity }, saleId) => {
   return affectedRows;
 };
 
-const findAll = async () => {
-  const [result] = await connection.execute(
-    'SELECT sale_id as saleId, product_id as productId, quantity, date '
-    + 'FROM StoreManager.sales_products '
-    + 'SP INNER JOIN StoreManager.sales S ON SP.sale_id = S.id',
-  );
-  return result;
-};
-
-const find = async (id) => { 
-  const [result] = await connection
-    .execute(
-      'SELECT product_id as productId, quantity, date '
-      + 'FROM StoreManager.sales_products '
-      + 'SP INNER JOIN StoreManager.sales S ON SP.sale_id = S.id WHERE sale_id = ?', [id],
-    );
-  return result;
-};
-
 const deleteItem = async (id) => {
   const [{ affectedRows }] = await connection
     .execute('DELETE FROM StoreManager.sales WHERE id = ?', [id]);
-  console.log(id);
   return affectedRows;
 };
 

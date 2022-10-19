@@ -1,5 +1,4 @@
 const { salesServices } = require('../services');
-const { mapError } = require('../utils/errorMap');
 
 const insert = async (req, res) => {
   const payload = req.body;
@@ -9,8 +8,7 @@ const insert = async (req, res) => {
 
 const find = async (req, res) => { 
   const { id } = req.params;
-  const { message, type } = await salesServices.find(id);
-  if (type) { return res.status(mapError(type)).json({ message }); }
+  const { message } = await salesServices.find(id);
   return res.status(200).json(message);
 };
 
